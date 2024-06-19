@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="clone.twitter.repository.UserMapper">
+
+  <insert id="save">
+    INSERT INTO
+      user (id, username, email, password_hash, profile_name, birthdate, created_at, updated_at)
+    VALUES
+      (#{id, jdbcType=CHAR}, #{username}, #{email}, #{passwordHash}, #{profileName}, #{birthdate}, #{createdAt}, #{updatedAt})
+  </insert>
+
+  <select id="isExistingUsername" parameterType="String" resultType="boolean">
+    SELECT
+      EXISTS (
+        SELECT
+          username
+        FROM
+          user
+        WHERE
+          username=#{username}
+      );
+  </select>
+
+  <select id="isExistingEmail" parameterType="String" resultType="boolean">
+    SELECT
+      EXISTS (
+        SELECT
+          email
+        FROM
+          user
+        WHERE
+          email=#{email}
+      );
+  </select>
+
+  <select id="findById" resultType="User">
+    SELECT
+      id,
+      username,
+      email,
+      password_hash,
+      profile_name,
+      birthdate,
+      created_at,
+      updated_at
+    FROM
+      user
+    WHERE
+      id = #{id}
+      AND is_inactive = 0
+  </select>
+
+  <select id="findByUsername" resultType="User">
+    SELECT
+      id,
+      username,
+      email,
+      password_hash,
+      profile_name,
+      birthdate,
+      created_at,
+      updated_at
+    FROM
+      user
+    WHERE
+      username = #{username}
+      AND is_inactive = 0
+  </select>
+
+  <select id="findByEmail" resultType="User">
+    SELECT
+      id,
+      username,
+      email,
+      password_hash,
+      profile_name,
+      birthdate,
+      created_at,
+      updated_at
+    FROM
+      user
+    WHERE
+      email = #{email}
+      AND is_inactive = 0
+  </select>
+
+  <update id="deleteById">
+    UPDATE
+      user
+    SET
+      is_inactive = 1;
+    WHERE
+      id = #{id}
+  </update>
+</mapper>

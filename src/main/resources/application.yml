@@ -1,0 +1,63 @@
+spring:
+  profiles:
+    active: local
+  datasource:
+# 테스트 v.3.1: mysql replication 제거
+#
+    url: jdbc:mysql://127.0.0.1/twitterlocal
+    username: root
+    password:
+#    primary-mysql:
+#      url: jdbc:mysql://127.0.0.1/twitterlocal-primary
+#      username: root
+#      password:
+#    replica-mysql:
+#      url: jdbc:mysql://127.0.0.1/twitterlocal-replica
+#      username: root
+#      password:
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
+# 테스트 v.3.1: redis session storage 제거
+#
+#  session:
+#    store-type: redis
+  redis:
+# 테스트 v.3.1: redis session storage 제거
+#
+#    session:
+#      host:
+#      port:
+#      password:
+    fan-out:
+      host:
+      port:
+      password:
+    cluster:
+      nodes:
+        - host1:port
+        - host2:port
+        - host3:port
+        - host4:port
+        - host5:port
+        - host6:port
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+
+logging:
+  level:
+    org:
+      springframework:
+        jdbc: debug
+    clone:
+      twitter:
+        repository: trace
+
+# 테스트 v.3.1: mysql replication 제거
+#
+# # MyBatisConfig.sqlSessionFactory에서 정의하는 것으로 변경
+mybatis:
+  type-aliases-package: clone.twitter.domain
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath:mapper/**/*.xml
